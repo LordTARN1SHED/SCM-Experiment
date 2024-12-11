@@ -1,0 +1,90 @@
+<mxfile host="Electron" modified="2023-12-01T12:13:02.238Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="Z9qYAts2GFas6lc4eqt_" version="22.1.2" type="device">
+  <diagram name="第 1 页" id="CiwJTZoDvzAI31mXxqNk">
+    <mxGraphModel dx="947" dy="2311" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4u-fTCYzQTjSclCihG0E-3" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-1" target="4u-fTCYzQTjSclCihG0E-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-1" value="读取温度函数开始" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="200" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-5" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-2" target="4u-fTCYzQTjSclCihG0E-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-2" value="定义并初始化变量" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-11" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-4" target="4u-fTCYzQTjSclCihG0E-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-4" value="重置ds18b20" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-10" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-6" target="4u-fTCYzQTjSclCihG0E-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-6" value="写RAM控制字0xCC，表示跳过" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-19" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-8" target="4u-fTCYzQTjSclCihG0E-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-8" value="写操作控制字0x44，表示进行读取温度操作" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-20" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-12" target="4u-fTCYzQTjSclCihG0E-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-12" value="将DQ置高，并延时600ms" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-13" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-14" target="4u-fTCYzQTjSclCihG0E-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-14" value="重置ds18b20" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="530" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-15" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-16" target="4u-fTCYzQTjSclCihG0E-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-16" value="写RAM控制字0xCC，表示跳过" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-27" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-17" target="4u-fTCYzQTjSclCihG0E-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-17" value="写操作控制字0xBE，表示从寄存器读出数据" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="710" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-21" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-14" target="4u-fTCYzQTjSclCihG0E-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-28" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-22" target="4u-fTCYzQTjSclCihG0E-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-22" value="将前两个byte读入x1，x2" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="800" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-29" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-24" target="4u-fTCYzQTjSclCihG0E-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-24" value="拼接低八位x1，高八位x2，放入t" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="890" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-30" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4u-fTCYzQTjSclCihG0E-25">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="1070" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-25" value="将t转换为10进制温度" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="980" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4u-fTCYzQTjSclCihG0E-31" value="返回温度" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1070" width="100" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

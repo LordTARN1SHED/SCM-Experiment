@@ -1,0 +1,204 @@
+#include  <reg51.h>
+#include "delay.h"
+#include "main.h"
+#include"reg51.h"
+#include"stdio.h"
+
+// 定义控制引脚
+sbit CS = P0^0; // 寄存器选择
+sbit SID = P0^1; // 读/写选择
+sbit SCLK = P0^2; // 使能信号
+sbit RST = P0^3; // 使能信号
+sbit RS = P0^0; // 寄存器选择
+sbit RW = P0^1; // 读/写选择
+
+sbit DRV=P0^4;
+sbit SPEED=P3^2;
+
+sbit K1=P2^0;
+sbit K2=P2^1;
+sbit K3=P2^2;
+
+int T0count=0;
+int T1count=0;
+int speed=0;
+int round=0;
+int mode=0;
+int target;
+int M=100;
+int N=50;
+int addcount=0;
+
+void writebit(bit x){
+   SCLK=1;
+   SID=x;
+   SCLK=0;
+}
+
+void writebyte(unsigned char byte){ 
+   int i=0;
+   bit x=0; 
+   for(i=7;i>=0;i--){
+      x=(byte >> i)&0x01;
+      writebit(x);
+   }
+}
+
+void writeword(unsigned char word){
+   unsigned char x;
+   unsigned char y;
+
+   CS=1;
+   writebyte(0x0FA);
+   x=(word >> 4)&0x0F;
+   y=word&0x0F;
+   x=x<<4;
+   y=y<<4;
+   writebyte(x);
+   writebyte(y);
+   CS=0;
+}
+// 向 LCD 发送命令
+void writecmd(unsigned char cmd){
+   unsigned char x;
+   unsigned char y;
+   CS=1;
+   writebyte(0xF8);
+   x=(cmd >> 4)&0x0F;
+   y=cmd&0x0F;
+   x=x<<4;
+   y=y<<4;
+   writebyte(x);
+   writebyte(y);
+   CS=0;
+}
+// LCD 初始化
+void LCD_Init() {
+    
+    delay_ms(40); // 上电后等待足够长的时间
+    RST=0;
+    delay_ms(5);
+    RST=1;
+    writecmd(0x01); // 清屏
+    delay_ms(5);;
+    writecmd(0x30); // 基本指令集
+    delay_ms(5);
+    writecmd(0x0C); // 显示开，光标关
+    delay_ms(5);
+    writecmd(0x06); // 
+    delay_ms(5);
+    
+    // 可以添加更多初始化设置
+}
+
+void ddram(unsigned char position){
+    RS=0;
+    RW=0;
+    writecmd(position);
+}
+
+void write(char str[]){
+    int i;
+    for(i=0;str[i]!='\0';i++){
+	   RS=1;
+	   RW=0;
+       writeword(str[i]);
+	   delay_ms(1);
+	}
+}
+void toASCIIWrite(int n){
+	int offset=0;
+	char temp[3];
+	offset=(n/100)%10;
+	temp[0]='0'+offset;
+	offset=(n%100)/10;
+	temp[1]='0'+offset;
+	offset=n%10;
+	temp[2]='0'+offset;
+	write(temp);
+}
+void speedToASCIIWrite(){
+	int offset=0;
+	char temp[3];
+	offset=(speed/100)%10;
+	temp[0]='0'+offset;
+	offset=(speed%100)/10;
+	temp[1]='0'+offset;
+	offset=speed%10;
+	temp[2]='0'+offset;
+	write(temp);
+}
+
+void main(void)
+{
+	EA=1;
+	EX0=1;
+	PT0=0;
+	PX1=0;
+	PX0=1;
+	IT0=1;
+	ET0=1;
+	ET1=1;
+	TMOD=0x11;
+	TH0=0x04c;//FC18 1MS
+	TL0=0x0f7;//B1E0 20MS D8F0 10MS EC78 5MS 3CB0 50MS
+	TH1=0xff;//
+	TL1=0x00;//4cf7 50ms
+	TR0=1;
+	TR1=1;
+
+	LCD_Init(); // 初始化 LCD
+
+ 	while(1){
+		if(K1){if(K2){if(K3)target=110;else{target=100;}}else{if(K3)target=90;else{target=80;}}}
+		else{if(K2){if(K3)target=70;else{target=60;}}else{if(K3)target=50;else{target=40;}}}
+		ddram(0x82);
+   		write("吉林大学");
+		ddram(0x90);
+   		write("占空比：0.");
+		toASCIIWrite(N);
+		ddram(0x89);
+   		write("目标速度：");
+		toASCIIWrite(target);
+		ddram(0x99);
+   		write("速度值：");
+		speedToASCIIWrite();
+	}
+}
+void TIMEOUT0() interrupt 1{
+	TH0=0x04c;
+	TL0=0x0f7;
+	T0count++;
+	if(T0count==20){
+		T0count=0;
+		speed=round;
+		round=0;
+		if(speed>target){
+			if(speed-target>20)N+=5;
+			else if(speed-target>15)N+=4;
+			else if(speed-target>10)N+=3;
+			else if(speed-target>5)N+=2;
+			else N++;
+			addcount=0;
+		}
+		else if(speed<target){
+			if(target-speed>20)N-=5;
+			else if(target-speed>15)N-=4;
+			else if(target-speed>10)N-=3;
+			else if(target-speed>5)N-=2;
+			else N--;
+			addcount=0;
+		}
+	}
+}
+void TIMEOUT1() interrupt 3 using 2{
+	TH1=0xff;
+	TL1=0xac;
+	addcount+=N;
+	if(addcount>=M){DRV=1;addcount-=M;}
+	else{DRV=0;}
+}
+
+void ROUNDCOUNT() interrupt 0 {
+	round++;
+}

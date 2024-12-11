@@ -1,0 +1,122 @@
+#include <reg52.h> // 适用于许多8051系列的单片机
+#include"delay.h"
+
+// 定义控制引脚
+sbit CS = P0^0; // 寄存器选择
+sbit SID = P0^1; // 读/写选择
+sbit SCLK = P0^2; // 使能信号
+sbit RST = P0^3; // 使能信号
+sbit RS = P0^0; // 寄存器选择
+sbit RW = P0^1; // 读/写选择
+
+const unsigned note[8] = {0x20,0x30,0x28,0x28,0x20,0xE0,0xE0,0xE0};
+
+
+void writebit(bit x){
+   SCLK=1;
+   SID=x;
+   SCLK=0;
+}
+
+
+void writebyte(unsigned char byte){ 
+   int i=0;
+   bit x=0; 
+   for(i=7;i>=0;i--){
+      x=(byte >> i)&0x01;
+      writebit(x);
+   }
+}
+
+void writeword(unsigned char word){
+   unsigned char x;
+   unsigned char y;
+
+   CS=1;
+   writebyte(0x0FA);
+   x=(word >> 4)&0x0F;
+   y=word&0x0F;
+   x=x<<4;
+   y=y<<4;
+   writebyte(x);
+   writebyte(y);
+   CS=0;
+}
+
+// 向 LCD 发送命令
+void writecmd(unsigned char cmd){
+   unsigned char x;
+   unsigned char y;
+   CS=1;
+   writebyte(0xF8);
+   x=(cmd >> 4)&0x0F;
+   y=cmd&0x0F;
+   x=x<<4;
+   y=y<<4;
+   writebyte(x);
+   writebyte(y);
+   CS=0;
+}
+
+void LCD_startGraphic(){
+	writecmd(0x34);          // 扩展指令开启
+	writecmd(0x36);          // 绘图指令开启
+}
+void LCD_endGraphic(){
+	writecmd(0x36);          // 绘图指令关闭
+	writecmd(0x30);          // 扩展指令关闭
+}
+
+// LCD 初始化
+void LCD_Init() {
+    
+    delay_ms(40); // 上电后等待足够长的时间
+    RST=0;
+    delay_ms(5);
+    RST=1;
+    writecmd(0x01); // 清屏
+    delay_ms(5);;
+    writecmd(0x30); // 基本指令集
+    delay_ms(5);
+    writecmd(0x0C); // 显示开，光标关
+    delay_ms(5);
+    writecmd(0x06); // 
+    delay_ms(5);
+    
+    // 可以添加更多初始化设置
+}
+
+void ddram(unsigned char position){
+    RS=0;
+    RW=0;
+    writecmd(position);
+}
+
+void write(char str[]){
+    int i;
+    for(i=0;str[i]!='\0';i++){
+	   RS=1;
+	   RW=0;
+       writeword(str[i]);
+	   delay_ms(1);
+	}
+}
+
+void main() {
+    LCD_Init(); // 初始化 LCD
+
+    // 之后的代码可以进行字符显示、图形处理等
+    while(1){
+      ddram(0x82);
+   	  write("吉林大学");
+	  ddram(0x90);
+   	  write("Jilin University");
+	  ddram(0x8B);
+   	  write("正常");
+	  ddram(0x99);
+   	  write("测量值：");
+	  write("123");
+	  writenote();
+    }
+   
+}
